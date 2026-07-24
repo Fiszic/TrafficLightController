@@ -3,6 +3,7 @@ from pedestrian_light import PedestrianLight
 
 class SignalGroup:
     def __init__(self, lights_ids, block, ped_lights_ids=None):
+        self.current_state = "RED"
         if ped_lights_ids is None:
             ped_lights_ids = []
         self.lights = []
@@ -35,6 +36,7 @@ class SignalGroup:
                 ped_light.set_state("STOP")
         for light in self.lights: # Simulates turning load switch on for the block
             light.set_state(color)
+        self.current_state = color
 
     def queue_pedestrian(self, pedestrian):
         self.queue_pedestrian = True

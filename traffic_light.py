@@ -9,7 +9,7 @@ class TrafficLight:
         if not self.neutral_connected:
             self.state = "OFF"
             return
-        self.state = current_state.upper()
+        self.state = current_state
 
     def __repr__(self):
         return f"[Light {self.light_id}: {self.state}]"
