@@ -2,13 +2,13 @@ from traffic_light import TrafficLight
 from pedestrian_light import PedestrianLight
 
 class SignalGroup:
-    def __init__(self, lights_ids, port, ped_lights_ids=None):
+    def __init__(self, lights_ids, ports, ped_lights_ids=None):
         self.current_state = "RED"
         if ped_lights_ids is None:
             ped_lights_ids = []
         self.lights = []
         self.ped_lights = []
-        self.port = port
+        self.ports = ports
         for light_id in lights_ids:
             self.lights.append(TrafficLight(light_id))
         for ped_light_id in ped_lights_ids:
@@ -16,8 +16,8 @@ class SignalGroup:
         self.pedestrian_light = False # Pedestrian light is walk or not
         self.queue_pedestrian = False # Pedestrian pressed the button to walk
 
-    def get_port(self):
-        return self.port
+    def get_ports(self):
+        return self.ports
 
     def update_lights(self, color, phase_timer=0):
         if color == "GREEN" and self.queue_pedestrian and phase_timer == 1:

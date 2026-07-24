@@ -1,4 +1,4 @@
-class Ports:
+class TerminalBlocks:
     northbound_left = 5
     northbound_straight = 2
     eastbound_left = 7

@@ -8,10 +8,10 @@ class Intersection:
         self.status = "OP" # OP for operating and EF for emergency flashing
         self.traffic_controller = TrafficController(intersection=self)
         self.signal_groups = {
-            1: SignalGroup(LightIDs.NS_bound_left,Ports.southbound_left),
-            2: SignalGroup(LightIDs.NS_bound_straight, Ports.southbound_straight, LightIDs.ped_NS),
-            3: SignalGroup(LightIDs.EW_bound_left, Ports.westbound_left),
-            4: SignalGroup(LightIDs.EW_bound_straight, Ports.westbound_straight, LightIDs.ped_EW),
+            1: SignalGroup(LightIDs.NS_bound_left,[Ports.southbound_left, Ports.northbound_left]),
+            2: SignalGroup(LightIDs.NS_bound_straight, [Ports.southbound_straight, Ports.northbound_straight]),
+            3: SignalGroup(LightIDs.EW_bound_left, [Ports.westbound_left, Ports.eastbound_left]),
+            4: SignalGroup(LightIDs.EW_bound_straight, [Ports.westbound_straight, Ports.eastbound_straight]),
         }
 
     def set_emergency_status(self):
