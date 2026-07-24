@@ -1,12 +1,13 @@
-class TerminalBlocks:
-    southbound_left = "Block_A"
-    southbound_straight = "Block_B"
-    westbound_left = "Block_C"
-    westbound_straight = "Block_D"
-    northbound_left = "Block_E"
-    northbound_straight = "Block_F"
-    eastbound_left = "Block_G"
-    eastbound_straight = "Block_H"
+class Ports:
+    northbound_left = 5
+    northbound_straight = 2
+    eastbound_left = 7
+    eastbound_straight = 4
+    southbound_left = 1
+    southbound_straight = 6
+    westbound_left = 3
+    westbound_straight = 8
+
 
 class LightIDs:
     NS_bound_left = [0, 6]
