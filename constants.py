@@ -13,10 +13,8 @@ class LightIDs:
     NS_bound_straight = [1, 2, 7, 8]
     EW_bound_left = [3, 9]
     EW_bound_straight = [4, 5, 10, 11]
-    ped_east_NS = [1, 2]
-    ped_west_NS = [5, 6]
-    ped_north_NS = [7, 0]
-    ped_south_NS = [3, 4]
+    ped_NS = [1, 2, 5, 6]
+    ped_EW = [0, 3, 4, 7]
 
 class Durations:
     green_duration = 6

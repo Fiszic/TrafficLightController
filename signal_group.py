@@ -2,7 +2,9 @@ from traffic_light import TrafficLight
 from pedestrian_light import PedestrianLight
 
 class SignalGroup:
-    def __init__(self, lights_ids, ped_lights_ids, block):
+    def __init__(self, lights_ids, block, ped_lights_ids=None):
+        if ped_lights_ids is None:
+            ped_lights_ids = []
         self.lights = []
         self.ped_lights = []
         self.terminal_block = block
@@ -16,10 +18,11 @@ class SignalGroup:
     def get_terminal_block(self):
         return self.terminal_block
 
-    def update_lights(self, color):
-        if color == "GREEN" and self.queue_pedestrian:
+    def update_lights(self, color, phase_timer=0):
+        if color == "GREEN" and self.queue_pedestrian and phase_timer == 1:
             self.queue_pedestrian = False
             self.pedestrian_light = True
+        if color == "GREEN" and self.pedestrian_light:
             for ped_light in self.ped_lights:
                 ped_light.set_state("WALK")
         if color == "YELLOW" and self.pedestrian_light:
