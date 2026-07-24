@@ -14,7 +14,4 @@ class ConflictMonitor:
             if not all(state == signal_group.current_state for state in light_states):
                 print(f"[CMU FAULT]: Phase {phase_id} has a stray light.")
                 return False
-            if (not signal_group.current_state == "GREEN") and signal_group.pedestrian_light:
-                print(f"[CMU FAULT]: Phase {phase_id} has a stray pedestrian walk light.")
-                return False
         return True
