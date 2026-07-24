@@ -32,7 +32,7 @@ class TrafficController:
             if group_id == self.current_signal_group:
                 if current_color in ["GREEN", "YELLOW"]:
                     gy_count += 1
-                    signal_group.update_lights(current_color, self.phase_timer)
+                    signal_group.update_lights(current_color)
                 else:
                     signal_group.update_lights("RED")
             else:
