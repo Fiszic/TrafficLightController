@@ -8,7 +8,7 @@ class ConflictMonitor:
             print(f"[CMU FAULT]: Multiple go light phases.")
             return False
         for signal_id, signal_group in intersection.signal_groups.items():
-            light_states = [light.current_state for light in signal_group.lights]
+            light_states = [light.state for light in signal_group.lights]
             if "OFF" in light_states:
                 print(f"[CMU FAULT]: Signal group {signal_id} has an unpowered light.")
                 return False
@@ -26,7 +26,7 @@ class ConflictMonitor:
                 if current_signal_group + 1 == 4 and phase_id in [2, 6]:
                     print(f"[CMU FAULT]: Pedestrian Phase {phase_id} has a walk signal at the wrong time.")
                     return False
-            light_states = [light.current_state for light in phase_group.lights]
+            light_states = [light.state for light in phase_group.lights]
             if phase_group.current_state != "WALK" and any(state == "WALK" for state in light_states):
                 print(f"[CMU FAULT]: Pedestrian Phase {phase_id} has a stray light.")
                 return False

@@ -20,7 +20,7 @@ class TrafficController:
             self.current_sequence += 1
             self.phase_timer = 0
         elif current_color == "RED" and self.phase_timer >= Durations.red_duration:
-            self.current_signal_group = self.current_signal_group % 4
+            self.current_signal_group = (self.current_signal_group + 1) % 4
             self.current_sequence = 0
             self.phase_timer = 0
         self.send_control_signals()
@@ -44,7 +44,7 @@ class TrafficController:
                 self.intersection.go_ped_phases.remove(phase_id)
             elif phase_id in self.intersection.go_ped_phases and current_color == "GREEN":
                 phase_group.update_lights("WALK")
-            elif phase_id in self.intersection.queued_ped_phases and current_color == "GREEN" and self.phase_timer == 1:
+            elif phase_id in self.intersection.queued_ped_phases and current_color == "GREEN" and self.phase_timer == 0:
                 if self.current_signal_group + 1 == 2 and phase_id in [2, 6]:
                     phase_group.update_lights("WALK")
                     self.intersection.go_ped_phases.add(phase_id)
