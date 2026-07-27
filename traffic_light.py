@@ -4,7 +4,6 @@ class TrafficLight:
         self.light_id = light_id
         self.neutral_connected = True
 
-
     def set_state(self, current_state):
         if not self.neutral_connected:
             self.state = "OFF"

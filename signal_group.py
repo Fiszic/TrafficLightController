@@ -5,7 +5,7 @@ class SignalGroup:
     def __init__(self, lights_ids, ports, is_pedestrian_light):
         if is_pedestrian_light:
             self.current_state = "STOP"
-            self.lights = lights_ids
+            self.lights = []
             self.ports = ports
             for light_id in lights_ids:
                 self.lights.append(PedestrianLight(light_id))

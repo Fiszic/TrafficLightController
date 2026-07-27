@@ -1,16 +1,47 @@
-tick = 0
-status = "Green"
+from Intersection import Intersection
 
+# 🔴🟡🟢🚶✋
+def display_intersection(intersection, traffic_lights, pedestrian_lights):
+    symbols = {
+        "OFF":"⚫️",
+        "RED":"🔴",
+        "YELLOW":"🟡",
+        "GREEN":"🟢",
+        "WALK":"🚶",
+        "STOP":"✋",
+        "FLASHING_RED":"🛑"
+    }
+    print(f"    P7 |   |   |   | 0 | 1 | 2 | P0    ")
+    print(f"    ✋ |||||||||||||🔴  🔴  🔴  ✋    ")
+    print(f"P6✋                               ✋P1")
+    print(f"-                                   =--")
+    print(f"11🔴                                =  ")
+    print(f"-                                   =--")
+    print(f"10🔴                                =  ")
+    print(f"-                                   =--")
+    print(f"9 🔴                                =  ")
+    print(f"--=                                 =--")
+    print(f"  =                                 🔴3")
+    print(f"--=                                   -")
+    print(f"  =                                 🔴4")
+    print(f"--=                                   -")
+    print(f"  =                                 🔴5")
+    print(f"--=                                   -")
+    print(f"P5✋                               ✋P2")
+    print(f"    ✋  🔴  🔴  🔴|||||||||||||  ✋   ")
+    print(f"    P4 | 8 | 7 | 6 |   |   |   | P3    ")
 
-def update_state(current_tick):
-    global tick
-    global status
-    if tick <= 10:
-        status = "Green"
-    elif tick <= 13:
-        status = "Yellow"
-
-
+def simulate():
+    intersection = Intersection()
+    traffic_lights = {}
+    pedestrian_lights = {}
+    for signal_id, signal_group in intersection.signal_groups.items():
+        for light in signal_group.lights:
+            traffic_lights[light.light_id] = light
+    for phase_id, phase_group in intersection.pedestrian_phase_groups.items():
+        for light in phase_group.lights:
+            pedestrian_lights[light.light_id] = light
+    display_intersection(intersection, traffic_lights, pedestrian_lights)
 
 
 
