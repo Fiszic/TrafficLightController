@@ -17,7 +17,7 @@ def display_intersection(intersection, traffic_lights, pedestrian_lights):
     for light_id, light in pedestrian_lights.items():
         key["P"+str(light_id)] = symbols[light.state]
     print(f"    P7 |   |   |   | 0 | 1 | 2 | P0    ")
-    print(f"    {key["P7"]} |||||||||||||{key["0"]}  {key["1"]}  {key["2"]}  {key["P3"]}    ")
+    print(f"    {key["P7"]} |||||||||||||{key["0"]}  {key["1"]}  {key["2"]}  {key["P0"]}    ")
     print(f"P6{key["P6"]}                               {key["P1"]}P1")
     print(f"-                                   =--")
     print(f"11{key["11"]}                                =  ")
@@ -54,9 +54,24 @@ def simulate():
         display_intersection(intersection, traffic_lights, pedestrian_lights)
         print(f"time elapsed: {elapsed_time} seconds")
         print(f"current phase timer: {intersection.traffic_controller.phase_timer} seconds")
-        user_input = input("ID of pedestrian button that is hit(0-7):")
+        user_input = input("ID of pedestrian button that is pressed(0-7):")
         if user_input in ["0", "1", "2", "3", "4", "5", "6", "7"]:
             intersection.button_pressed(int(user_input))
+        user_input = input("Type \"TL\" or \"PED\" to cause a malfunction")
+        if user_input == "TL":
+            id_input = input("ID of the traffic light malfunction.")
+            state_input = (input("State of the traffic light malfunction.")).upper()
+            if state_input == "OFF":
+                traffic_lights[int(id_input)].neutral_connected = False
+            else:
+                traffic_lights[int(id_input)].state = state_input
+        if user_input == "PED":
+            id_input = input("ID of the pedestrian light malfunction.")
+            state_input = (input("State of the pedestrian light malfunction.")).upper()
+            if state_input == "OFF":
+                pedestrian_lights[int(id_input)].neutral_connected = False
+            else:
+                pedestrian_lights[int(id_input)].state = state_input
         user_input = input("Would you like to tick or quit(type \"QUIT\")?").upper()
     print("Simulation ended")
 

@@ -4,12 +4,14 @@ class PedestrianLight():
         self.light_id = light_id
         self.state = "STOP" # STOP, WALK, OFF
         self.neutral_connected = True # Just for simulation purposes, but doesn't change anything otherwise
+        self.rogue_state = False
 
     def set_state(self, current_state):
         if not self.neutral_connected:
             self.state = "OFF"
             return
-        self.state = current_state.upper()
+        if not self.rogue_state:
+            self.state = current_state
 
     def __repr__(self):
         return f"[Ped Light {self.light_id}: {self.state}]"
