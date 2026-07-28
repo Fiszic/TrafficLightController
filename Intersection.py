@@ -30,9 +30,9 @@ class Intersection:
     def tick(self):
         if self.status == "EF":
             for signal_group in self.signal_groups.values():
-                signal_group.update_lights("FLASHING_RED")
+                signal_group.update_lights("FLASHING_RED", True)
             for signal_group in self.pedestrian_phase_groups.values():
-                signal_group.update_lights("STOP")
+                signal_group.update_lights("STOP", True)
             return
         self.traffic_controller.tick()
 

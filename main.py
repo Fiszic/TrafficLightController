@@ -65,6 +65,7 @@ def simulate():
                 traffic_lights[int(id_input)].neutral_connected = False
             else:
                 traffic_lights[int(id_input)].state = state_input
+                traffic_lights[int(id_input)].rogue_state = True
         if user_input == "PED":
             id_input = input("ID of the pedestrian light malfunction.")
             state_input = (input("State of the pedestrian light malfunction.")).upper()
@@ -72,7 +73,8 @@ def simulate():
                 pedestrian_lights[int(id_input)].neutral_connected = False
             else:
                 pedestrian_lights[int(id_input)].state = state_input
-        user_input = input("Would you like to tick or quit(type \"QUIT\")?").upper()
+                traffic_lights[int(id_input)].rogue_state = True
+        user_input = input("Would you like to quit(type \"QUIT\")?").upper()
     print("Simulation ended")
 
 

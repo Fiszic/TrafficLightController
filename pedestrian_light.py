@@ -6,11 +6,11 @@ class PedestrianLight():
         self.neutral_connected = True # Just for simulation purposes, but doesn't change anything otherwise
         self.rogue_state = False
 
-    def set_state(self, current_state):
+    def set_state(self, current_state, force_set):
         if not self.neutral_connected:
             self.state = "OFF"
             return
-        if not self.rogue_state:
+        if (not self.rogue_state) or force_set:
             self.state = current_state
 
     def __repr__(self):

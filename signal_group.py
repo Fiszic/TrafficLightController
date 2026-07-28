@@ -19,7 +19,7 @@ class SignalGroup:
     def get_ports(self):
         return self.ports
 
-    def update_lights(self, color):
+    def update_lights(self, color, force_set=False):
         for light in self.lights: # Simulates turning load switch on for the block
-            light.set_state(color)
+            light.set_state(color, force_set)
         self.current_state = color
