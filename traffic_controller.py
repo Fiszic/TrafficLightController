@@ -13,7 +13,7 @@ class TrafficController:
     def tick(self):
         self.phase_timer += 1
         current_color = self.sequence[self.current_sequence]
-        if current_color == "GREEN" and self.phase_timer >= Durations.green_duration:
+        if self.check_change_green(current_color):
             self.current_sequence += 1
             self.phase_timer = 0
         elif current_color == "YELLOW" and self.phase_timer >= Durations.yellow_duration:
@@ -24,6 +24,19 @@ class TrafficController:
             self.current_sequence = 0
             self.phase_timer = 0
         self.send_control_signals()
+
+    def check_change_green(self, current_color):
+        if current_color != "GREEN":
+            return False
+        if self.phase_timer < Durations.min_green_duration:
+            return False
+        if self.phase_timer >= Durations.green_duration:
+            return True
+        if self.current_signal_group in self.intersection.queued_ped_phases:
+            return False
+        if self.intersection.inductive_phase_loops[self.current_signal_group]:
+            return False
+        return True
 
     def send_control_signals(self):
         current_color = self.sequence[self.current_sequence]

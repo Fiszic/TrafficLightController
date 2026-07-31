@@ -22,6 +22,12 @@ class Intersection:
         }
         self.queued_ped_phases = set()
         self.go_ped_phases = set()
+        self.inductive_phase_loops = {
+            1: True,
+            2: True,
+            3: True,
+            4: True
+        }
 
     def set_emergency_status(self):
         self.status = "EF"

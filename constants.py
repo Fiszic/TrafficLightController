@@ -23,6 +23,7 @@ class LightIDs:
     ped_EW_south = [3, 4]
 
 class Durations:
+    min_green_duration = 3
     green_duration = 6
     yellow_duration = 3
     red_duration = 1
