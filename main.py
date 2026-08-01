@@ -35,6 +35,8 @@ def display_intersection(intersection, traffic_lights, pedestrian_lights):
     print(f"P5{key["P5"]}                               {key["P2"]}P2")
     print(f"    {key["P4"]}   {key["8"]}  {key["7"]}  {key["6"]}||||||||||||| {key["P3"]}   ")
     print(f"    P4 | 8 | 7 | 6 |   |   |   | P3    ")
+    for inductive_sensor, reading in intersection.inductive_phase_loops.items():
+        print(f"Inductive sensors for phase {inductive_sensor} : {reading}")
 
 def simulate():
     intersection = Intersection()
@@ -54,6 +56,13 @@ def simulate():
         display_intersection(intersection, traffic_lights, pedestrian_lights)
         print(f"time elapsed: {elapsed_time} seconds")
         print(f"current phase timer: {intersection.traffic_controller.phase_timer} seconds")
+        user_input = input("Add detection(\"DET\") or remove detection(\"REM\") of car")
+        if user_input == "DET":
+            phase = input("Enter the phase number of detection added")
+            intersection.inductive_phase_loops[int(phase)] = True
+        elif user_input == "REM":
+            phase = input("Enter the phase number of detection removed")
+            intersection.inductive_phase_loops[int(phase)] = False
         user_input = input("ID of pedestrian button that is pressed(0-7):")
         if user_input in ["0", "1", "2", "3", "4", "5", "6", "7"]:
             intersection.button_pressed(int(user_input))

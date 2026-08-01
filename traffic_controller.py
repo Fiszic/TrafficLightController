@@ -34,7 +34,7 @@ class TrafficController:
             return True
         if self.current_signal_group in self.intersection.queued_ped_phases:
             return False
-        if self.intersection.inductive_phase_loops[self.current_signal_group]:
+        if self.intersection.inductive_phase_loops[self.current_signal_group + 1]:
             return False
         return True
 
