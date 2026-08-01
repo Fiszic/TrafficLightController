@@ -13,17 +13,47 @@ class TrafficController:
     def tick(self):
         self.phase_timer += 1
         current_color = self.sequence[self.current_sequence]
-        if self.check_change_green(current_color):
+        if self.check_e_priority_change_green(current_color):
+            self.current_sequence += 1
+            self.phase_timer = 0
+        elif self.check_e_priority_clear(current_color):
+            self.current_sequence += 1
+            self.phase_timer = 0
+            del self.intersection.queued_emergency_phases[self.current_signal_group]
+        elif self.check_change_green(current_color):
             self.current_sequence += 1
             self.phase_timer = 0
         elif current_color == "YELLOW" and self.phase_timer >= Durations.yellow_duration:
             self.current_sequence += 1
             self.phase_timer = 0
         elif current_color == "RED" and self.phase_timer >= Durations.red_duration:
-            self.current_signal_group = (self.current_signal_group + 1) % 4
+            if self.intersection.queued_emergency_phases:
+                self.current_signal_group = next(iter(self.intersection.queued_emergency_phases)) - 1
+            else:
+                self.current_signal_group = (self.current_signal_group + 1) % 4
             self.current_sequence = 0
             self.phase_timer = 0
         self.send_control_signals()
+
+    def check_e_priority_clear(self, current_color):
+        if current_color != "GREEN":
+            return False
+        if self.intersection.queued_emergency_phases:
+            return False
+        if self.current_signal_group + 1 != next(iter(self.intersection.queued_emergency_phases)):
+            return False
+        if self.intersection.queued_emergency_phases[self.current_signal_group]:
+            return False
+        return True
+
+    def check_e_priority_change_green(self, current_color):
+        if current_color != "GREEN":
+            return False
+        if not self.intersection.queued_emergency_phases:
+            return False
+        if self.intersection.go_ped_phases:
+            return False
+        return True
 
     def check_change_green(self, current_color):
         if current_color != "GREEN":

@@ -28,22 +28,29 @@ class Intersection:
         }
         self.populate_lights()
         self.signal_groups = {
-            1: SignalGroup(self.traffic_lights["NBL"] + self.traffic_lights["SBL"],[Ports.southbound_left, Ports.northbound_left], False),
-            2: SignalGroup(self.traffic_lights["NBS"] + self.traffic_lights["SBS"], [Ports.southbound_straight, Ports.northbound_straight], False),
-            3: SignalGroup(self.traffic_lights["EBL"] + self.traffic_lights["WBL"], [Ports.westbound_left, Ports.eastbound_left], False),
-            4: SignalGroup(self.traffic_lights["EBS"] + self.traffic_lights["WBS"], [Ports.westbound_straight, Ports.eastbound_straight], False),
+            1: SignalGroup(self.traffic_lights["NBL"] + self.traffic_lights["SBL"],
+                           [Ports.southbound_left, Ports.northbound_left], False),
+            2: SignalGroup(self.traffic_lights["NBS"] + self.traffic_lights["SBS"],
+                           [Ports.southbound_straight, Ports.northbound_straight], False),
+            3: SignalGroup(self.traffic_lights["EBL"] + self.traffic_lights["WBL"],
+                           [Ports.westbound_left, Ports.eastbound_left], False),
+            4: SignalGroup(self.traffic_lights["EBS"] + self.traffic_lights["WBS"],
+                           [Ports.westbound_straight, Ports.eastbound_straight], False),
+            #Emergency Groups
+            5: SignalGroup(self.traffic_lights["NBL"] + self.traffic_lights["NBS"],
+                           [Ports.northbound_left, Ports.northbound_straight], False),
+            6: SignalGroup(self.traffic_lights["EBL"] + self.traffic_lights["EBS"],
+                           [Ports.eastbound_left, Ports.eastbound_straight], False),
+            7: SignalGroup(self.traffic_lights["SBL"] + self.traffic_lights["SBS"],
+                           [Ports.southbound_left, Ports.southbound_straight], False),
+            8: SignalGroup(self.traffic_lights["WBL"] + self.traffic_lights["WBS"],
+                           [Ports.westbound_left, Ports.westbound_straight], False),
         }
         self.pedestrian_phase_groups = {
             2: SignalGroup(self.pedestrian_lights["NS_east"], [Ports.ped_NS_east], True),
             4: SignalGroup(self.pedestrian_lights["EW_south"], [Ports.ped_EW_south], True),
             6: SignalGroup(self.pedestrian_lights["NS_west"], [Ports.ped_NS_west], True),
             8: SignalGroup(self.pedestrian_lights["EW_north"], [Ports.ped_EW_north], True),
-        }
-        self.emergency_groups = {
-            0: SignalGroup(self.traffic_lights["NBL"] + self.traffic_lights["NBS"], [Ports.northbound_left, Ports.northbound_straight], False),
-            1: SignalGroup(self.traffic_lights["EBL"] + self.traffic_lights["EBS"], [Ports.eastbound_left, Ports.eastbound_straight], False),
-            2: SignalGroup(self.traffic_lights["SBL"] + self.traffic_lights["SBS"], [Ports.southbound_left, Ports.southbound_straight], False),
-            3: SignalGroup(self.traffic_lights["WBL"] + self.traffic_lights["WBS"], [Ports.westbound_left, Ports.westbound_straight], False),
         }
         self.queued_ped_phases = set()
         self.go_ped_phases = set()
@@ -53,7 +60,13 @@ class Intersection:
             3: True,
             4: True
         }
-        self.emergency_priority = False
+        self.queued_emergency_phases = {}
+        self.optical_sensors = {
+            5: False, # Northbound sensors
+            6: False, # Eastbound sensors
+            7: False, # Southbound sensors
+            8: False, # Westbound sensors
+        }
 
     def set_emergency_status(self):
         self.status = "EF"
@@ -66,6 +79,11 @@ class Intersection:
             for signal_group in self.pedestrian_phase_groups.values():
                 signal_group.update_lights("STOP", True)
             return
+        for optical_sensor, reading in self.optical_sensors.items():
+            if reading:
+                self.queued_emergency_phases[optical_sensor] = True
+            elif self.queued_emergency_phases[optical_sensor]:
+                self.queued_emergency_phases[optical_sensor] = False
         self.traffic_controller.tick()
 
     def button_pressed(self, button):
