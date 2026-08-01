@@ -2,19 +2,13 @@ from traffic_light import TrafficLight
 from pedestrian_light import PedestrianLight
 
 class SignalGroup:
-    def __init__(self, lights_ids, ports, is_pedestrian_light):
+    def __init__(self, lights, ports, is_pedestrian_light):
+        self.lights = lights
+        self.ports = ports
         if is_pedestrian_light:
             self.current_state = "STOP"
-            self.lights = []
-            self.ports = ports
-            for light_id in lights_ids:
-                self.lights.append(PedestrianLight(light_id))
         else:
             self.current_state = "RED"
-            self.lights = []
-            self.ports = ports
-            for light_id in lights_ids:
-                self.lights.append(TrafficLight(light_id))
 
     def get_ports(self):
         return self.ports

@@ -3,22 +3,47 @@ from constants import ButtonIDs
 from constants import LightIDs
 from signal_group import SignalGroup
 from traffic_controller import TrafficController
+from traffic_light import TrafficLight
+from pedestrian_light import PedestrianLight
 
 class Intersection:
     def __init__(self):
         self.status = "OP" # OP for operating and EF for emergency flashing
         self.traffic_controller = TrafficController(intersection=self)
+        self.traffic_lights = {
+            "NBL": [],
+            "NBS": [],
+            "EBL": [],
+            "EBS": [],
+            "SBL": [],
+            "SBS": [],
+            "WBL": [],
+            "WBS": []
+        }
+        self.pedestrian_lights = {
+            "NS_east": [],
+            "EW_south": [],
+            "NS_west": [],
+            "EW_north": [],
+        }
+        self.populate_lights()
         self.signal_groups = {
-            1: SignalGroup(LightIDs.NS_bound_left,[Ports.southbound_left, Ports.northbound_left], False),
-            2: SignalGroup(LightIDs.NS_bound_straight, [Ports.southbound_straight, Ports.northbound_straight], False),
-            3: SignalGroup(LightIDs.EW_bound_left, [Ports.westbound_left, Ports.eastbound_left], False),
-            4: SignalGroup(LightIDs.EW_bound_straight, [Ports.westbound_straight, Ports.eastbound_straight], False),
+            1: SignalGroup(self.traffic_lights["NBL"] + self.traffic_lights["SBL"],[Ports.southbound_left, Ports.northbound_left], False),
+            2: SignalGroup(self.traffic_lights["NBS"] + self.traffic_lights["SBS"], [Ports.southbound_straight, Ports.northbound_straight], False),
+            3: SignalGroup(self.traffic_lights["EBL"] + self.traffic_lights["WBL"], [Ports.westbound_left, Ports.eastbound_left], False),
+            4: SignalGroup(self.traffic_lights["EBS"] + self.traffic_lights["WBS"], [Ports.westbound_straight, Ports.eastbound_straight], False),
         }
         self.pedestrian_phase_groups = {
-            2: SignalGroup(LightIDs.ped_NS_east, [Ports.ped_NS_east], True),
-            4: SignalGroup(LightIDs.ped_EW_south, [Ports.ped_EW_south], True),
-            6: SignalGroup(LightIDs.ped_NS_west, [Ports.ped_NS_west], True),
-            8: SignalGroup(LightIDs.ped_EW_north, [Ports.ped_EW_north], True),
+            2: SignalGroup(self.pedestrian_lights["NS_east"], [Ports.ped_NS_east], True),
+            4: SignalGroup(self.pedestrian_lights["EW_south"], [Ports.ped_EW_south], True),
+            6: SignalGroup(self.pedestrian_lights["NS_west"], [Ports.ped_NS_west], True),
+            8: SignalGroup(self.pedestrian_lights["EW_north"], [Ports.ped_EW_north], True),
+        }
+        self.emergency_groups = {
+            0: SignalGroup(self.traffic_lights["NBL"] + self.traffic_lights["NBS"], [Ports.northbound_left, Ports.northbound_straight], False),
+            1: SignalGroup(self.traffic_lights["EBL"] + self.traffic_lights["EBS"], [Ports.eastbound_left, Ports.eastbound_straight], False),
+            2: SignalGroup(self.traffic_lights["SBL"] + self.traffic_lights["SBS"], [Ports.southbound_left, Ports.southbound_straight], False),
+            3: SignalGroup(self.traffic_lights["WBL"] + self.traffic_lights["WBS"], [Ports.westbound_left, Ports.westbound_straight], False),
         }
         self.queued_ped_phases = set()
         self.go_ped_phases = set()
@@ -28,6 +53,7 @@ class Intersection:
             3: True,
             4: True
         }
+        self.emergency_priority = False
 
     def set_emergency_status(self):
         self.status = "EF"
@@ -51,3 +77,30 @@ class Intersection:
             self.queued_ped_phases.add(6)
         elif button in ButtonIDs.ped_EW_north:
             self.queued_ped_phases.add(8)
+
+    def populate_lights(self):
+        for light_id in LightIDs.N_bound_left:
+            self.traffic_lights["NBL"].append(TrafficLight(light_id))
+        for light_id in LightIDs.N_bound_straight:
+            self.traffic_lights["NBS"].append(TrafficLight(light_id))
+        for light_id in LightIDs.E_bound_left:
+            self.traffic_lights["EBL"].append(TrafficLight(light_id))
+        for light_id in LightIDs.E_bound_straight:
+            self.traffic_lights["EBS"].append(TrafficLight(light_id))
+        for light_id in LightIDs.S_bound_left:
+            self.traffic_lights["SBL"].append(TrafficLight(light_id))
+        for light_id in LightIDs.S_bound_straight:
+            self.traffic_lights["SBS"].append(TrafficLight(light_id))
+        for light_id in LightIDs.W_bound_left:
+            self.traffic_lights["WBL"].append(TrafficLight(light_id))
+        for light_id in LightIDs.W_bound_straight:
+            self.traffic_lights["WBS"].append(TrafficLight(light_id))
+
+        for light_id in LightIDs.ped_NS_east:
+            self.pedestrian_lights["NS_east"].append(PedestrianLight(light_id))
+        for light_id in LightIDs.ped_EW_south:
+            self.pedestrian_lights["EW_south"].append(PedestrianLight(light_id))
+        for light_id in LightIDs.ped_NS_west:
+            self.pedestrian_lights["NS_west"].append(PedestrianLight(light_id))
+        for light_id in LightIDs.ped_EW_north:
+            self.pedestrian_lights["EW_north"].append(PedestrianLight(light_id))

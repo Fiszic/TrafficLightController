@@ -13,10 +13,14 @@ class Ports:
     ped_EW_south = 12
 
 class LightIDs:
-    NS_bound_left = [0, 6]
-    NS_bound_straight = [1, 2, 7, 8]
-    EW_bound_left = [3, 9]
-    EW_bound_straight = [4, 5, 10, 11]
+    N_bound_left = [0]
+    N_bound_straight = [1, 2]
+    E_bound_left = [3]
+    E_bound_straight = [4, 5]
+    S_bound_left = [6]
+    S_bound_straight = [7, 8]
+    W_bound_left = [9]
+    W_bound_straight = [10, 11]
     ped_NS_east = [1, 2]
     ped_EW_north = [0, 7]
     ped_NS_west = [5, 6]
