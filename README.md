@@ -74,4 +74,8 @@ For example, if a port breaks, anyone can easily change the port in code.
 - Hardware support
 
 ## How to Run
-Clone the file and run the main file
+```bash
+git clone https://github.com/Fiszic/TrafficLightController.git
+cd TrafficLightController
+python main.py
+```
