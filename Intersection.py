@@ -61,6 +61,7 @@ class Intersection:
             4: True
         }
         self.queued_emergency_phases = {}
+        self.emergency_priority_engaged = False
         self.optical_sensors = {
             5: False, # Northbound sensors
             6: False, # Eastbound sensors
@@ -82,7 +83,7 @@ class Intersection:
         for optical_sensor, reading in self.optical_sensors.items():
             if reading:
                 self.queued_emergency_phases[optical_sensor] = True
-            elif self.queued_emergency_phases[optical_sensor]:
+            elif optical_sensor in self.queued_emergency_phases:
                 self.queued_emergency_phases[optical_sensor] = False
         self.traffic_controller.tick()
 

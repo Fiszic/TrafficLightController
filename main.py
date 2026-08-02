@@ -37,6 +37,14 @@ def display_intersection(intersection, traffic_lights, pedestrian_lights):
     print(f"    P4 | 8 | 7 | 6 |   |   |   | P3    ")
     for inductive_sensor, reading in intersection.inductive_phase_loops.items():
         print(f"Inductive sensors for phase {inductive_sensor} : {reading}")
+    emergency_phase_key = {
+        5: "North-bound",
+        6: "East-bound",
+        7: "South-bound",
+        8: "West-bound",
+    }
+    for optical_sensor, reading in intersection.optical_sensors.items():
+        print(f"Optical sensors for phase {emergency_phase_key[optical_sensor]} traffic : {reading}")
 
 def simulate():
     intersection = Intersection()
@@ -66,6 +74,13 @@ def simulate():
         user_input = input("ID of pedestrian button that is pressed(0-7):")
         if user_input in ["0", "1", "2", "3", "4", "5", "6", "7"]:
             intersection.button_pressed(int(user_input))
+        user_input = input("Add detection(\"DET\") or remove detection(\"REM\") of emergency vehicle")
+        if user_input == "DET":
+            sensor = input("ID of optical sensor detecting emergency vehicle(5-8)")
+            intersection.optical_sensors[int(sensor)] = True
+        if user_input == "REM":
+            sensor = input("ID of optical sensor detecting emergency vehicle(5-8)")
+            intersection.optical_sensors[int(sensor)] = False
         user_input = input("Type \"TL\" or \"PED\" to cause a malfunction")
         if user_input == "TL":
             id_input = input("ID of the traffic light malfunction.")

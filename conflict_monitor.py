@@ -7,14 +7,28 @@ class ConflictMonitor:
         if gy_count > 1:
             print(f"[CMU FAULT]: Multiple go light phases.")
             return False
-        for signal_id, signal_group in intersection.signal_groups.items():
-            light_states = [light.state for light in signal_group.lights]
-            if "OFF" in light_states:
-                print(f"[CMU FAULT]: Signal group {signal_id} has an unpowered light.")
-                return False
-            if not all(state == signal_group.current_state for state in light_states):
-                print(f"[CMU FAULT]: Signal group {signal_id} has a stray light.")
-                return False
+        if not intersection.emergency_priority_engaged:
+            for signal_id, signal_group in intersection.signal_groups.items():
+                if signal_id >= 5:
+                    break
+                light_states = [light.state for light in signal_group.lights]
+                if "OFF" in light_states:
+                    print(f"[CMU FAULT]: Signal group {signal_id} has an unpowered light.")
+                    return False
+                if not all(state == signal_group.current_state for state in light_states):
+                    print(f"[CMU FAULT]: Signal group {signal_id} has a stray light.")
+                    return False
+        else:
+            for signal_id, signal_group in intersection.signal_groups.items():
+                if signal_id <= 4:
+                    continue
+                light_states = [light.state for light in signal_group.lights]
+                if "OFF" in light_states:
+                    print(f"[CMU FAULT]: Signal group {signal_id} has an unpowered light.")
+                    return False
+                if not all(state == signal_group.current_state for state in light_states):
+                    print(f"[CMU FAULT]: Signal group {signal_id} has a stray light.")
+                    return False
         for phase_id, phase_group in intersection.pedestrian_phase_groups.items():
             if phase_group.current_state == "WALK":
                 if current_signal_group in [0, 2]:

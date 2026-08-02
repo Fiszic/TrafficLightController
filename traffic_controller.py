@@ -19,7 +19,7 @@ class TrafficController:
         elif self.check_e_priority_clear(current_color):
             self.current_sequence += 1
             self.phase_timer = 0
-            del self.intersection.queued_emergency_phases[self.current_signal_group]
+            del self.intersection.queued_emergency_phases[self.current_signal_group + 1]
         elif self.check_change_green(current_color):
             self.current_sequence += 1
             self.phase_timer = 0
@@ -29,7 +29,10 @@ class TrafficController:
         elif current_color == "RED" and self.phase_timer >= Durations.red_duration:
             if self.intersection.queued_emergency_phases:
                 self.current_signal_group = next(iter(self.intersection.queued_emergency_phases)) - 1
+                self.intersection.emergency_priority_engaged = True
             else:
+                if self.intersection.emergency_priority_engaged:
+                    self.intersection.emergency_priority_engaged = False
                 self.current_signal_group = (self.current_signal_group + 1) % 4
             self.current_sequence = 0
             self.phase_timer = 0
@@ -38,11 +41,13 @@ class TrafficController:
     def check_e_priority_clear(self, current_color):
         if current_color != "GREEN":
             return False
-        if self.intersection.queued_emergency_phases:
+        if not self.intersection.queued_emergency_phases:
             return False
         if self.current_signal_group + 1 != next(iter(self.intersection.queued_emergency_phases)):
             return False
-        if self.intersection.queued_emergency_phases[self.current_signal_group]:
+        if self.intersection.queued_emergency_phases[self.current_signal_group + 1]:
+            return False
+        if self.phase_timer < Durations.min_green_duration:
             return False
         return True
 
@@ -52,6 +57,10 @@ class TrafficController:
         if not self.intersection.queued_emergency_phases:
             return False
         if self.intersection.go_ped_phases:
+            return False
+        if self.intersection.emergency_priority_engaged:
+            return False
+        if self.phase_timer < Durations.min_green_duration:
             return False
         return True
 
@@ -72,6 +81,10 @@ class TrafficController:
         current_color = self.sequence[self.current_sequence]
         gy_count = 0 # Count the number of Green and Yellow lights in each signal group(Should not exceed 1)
         for group_id, signal_group in self.intersection.signal_groups.items():
+            if not self.intersection.emergency_priority_engaged and group_id >= 5:
+                break
+            elif self.intersection.emergency_priority_engaged and group_id <= 4:
+                continue
             if group_id == self.current_signal_group + 1:
                 if current_color in ["GREEN", "YELLOW"]:
                     gy_count += 1
