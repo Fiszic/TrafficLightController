@@ -174,3 +174,14 @@ git clone https://github.com/Fiszic/TrafficLightController.git
 cd TrafficLightController
 python main.py
 ```
+## Embedded Systems Concepts Demonstrated
+
+| Concept | Description |
+|---------|-------------|
+| FSM | Controls phase transitions and sequencing |
+| Conflict Monitor | Prevents unsafe signal combinations |
+| Vehicle Detection | Extends green phases up to a maximum time limit |
+| Timing Logic | Controls signal durations and pedestrian timing |
+| Event Handling | Responds to vehicle and emergency light detection and pedestrian crossing requests |
+| Hardware Abstraction | Controller logic is separated from signal outputs |
+| Modular Design | Controller, monitor, phase groups, and simulation components are independent |
