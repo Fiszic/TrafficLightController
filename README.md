@@ -155,6 +155,12 @@ For the simulation, instead of having an user input system that allows the user 
 - Vehicle detection
 - Emergency vehicle pre-emption
 
+### Hardware Inspiration
+
+Before implementing the controller, I studied the basic operation of traffic signal hardware, including traffic controllers, conflict monitor units, signal groups, and traffic phases. This includes wiring diagrams.
+
+Although the simulator does not interface with physical hardware, the software architecture mirrors these concepts so that the controller logic resembles a real embedded control system rather than a simple timed animation. This is most notably demonstrated by including ports into the code for each type of lane(north, south, east, west and straight or left). This represents the lights' wires as they are pinned to ports within a terminal block. Thus, the consideration that multiple wires for multiple lanes can be directly connected to the port which is controlled by a load switch allows for the a port and, at a higher-level, the signal groups to control multiple lights at once. 
+
 ## Simplifications
 
 - Multiple intersections
