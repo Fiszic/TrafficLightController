@@ -64,24 +64,24 @@ def simulate():
         display_intersection(intersection, traffic_lights, pedestrian_lights)
         print(f"time elapsed: {elapsed_time} seconds")
         print(f"current phase timer: {intersection.traffic_controller.phase_timer} seconds")
-        user_input = input("Add detection(\"DET\") or remove detection(\"REM\") of car")
+        user_input = input("Add detection(\"DET\") or remove detection(\"REM\") of car. Press ENTER to skip.")
         if user_input == "DET":
-            phase = input("Enter the phase number of detection added")
+            phase = input("Enter the phase number of detection added.")
             intersection.inductive_phase_loops[int(phase)] = True
         elif user_input == "REM":
-            phase = input("Enter the phase number of detection removed")
+            phase = input("Enter the phase number of detection removed.")
             intersection.inductive_phase_loops[int(phase)] = False
-        user_input = input("ID of pedestrian button that is pressed(0-7):")
+        user_input = input("ID of pedestrian button that is pressed(0-7). Press ENTER to skip:")
         if user_input in ["0", "1", "2", "3", "4", "5", "6", "7"]:
             intersection.button_pressed(int(user_input))
-        user_input = input("Add detection(\"DET\") or remove detection(\"REM\") of emergency vehicle")
+        user_input = input("Add detection(\"DET\") or remove detection(\"REM\") of emergency vehicle. Press ENTER to skip.")
         if user_input == "DET":
-            sensor = input("ID of optical sensor detecting emergency vehicle(5-8)")
+            sensor = input("ID of optical sensor detecting emergency vehicle(5-8).")
             intersection.optical_sensors[int(sensor)] = True
         if user_input == "REM":
-            sensor = input("ID of optical sensor detecting emergency vehicle(5-8)")
+            sensor = input("ID of optical sensor detecting emergency vehicle(5-8).")
             intersection.optical_sensors[int(sensor)] = False
-        user_input = input("Type \"TL\" or \"PED\" to cause a malfunction")
+        user_input = input("Type \"TL\" or \"PED\" to cause a malfunction. Press ENTER to skip.")
         if user_input == "TL":
             id_input = input("ID of the traffic light malfunction.")
             state_input = (input("State of the traffic light malfunction.")).upper()
@@ -98,8 +98,8 @@ def simulate():
             else:
                 pedestrian_lights[int(id_input)].state = state_input
                 traffic_lights[int(id_input)].rogue_state = True
-        user_input = input("Would you like to quit(type \"QUIT\")?").upper()
-    print("Simulation ended")
+        user_input = input("Would you like to quit(type \"QUIT\")? Press ENTER to continue to next tick.").upper()
+    print("Simulation ended.")
 
 
 if __name__ == '__main__':
