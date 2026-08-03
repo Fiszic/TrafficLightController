@@ -1,5 +1,5 @@
 # Traffic Light Controller Simulator
-This is a python-based simulator that models a traffic light controller. 
+This is a python-based simulator that models a traffic light controller. It takes inspiration from the functions and organization of real traffic signal controllers.
 To model real-world intersection behavior, the simulation uses finite state machines, configurable timing, and mimics real-world sensors, creating event-driven inputs.
 
 ## Features
