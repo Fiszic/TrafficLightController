@@ -16,6 +16,8 @@ To model real-world intersection behavior, the simulation uses finite state mach
 
 ## Demo
 
+![Animated Demo](assets/Demo.gif)
+
 ## Architecture
 
 In this simulation, the intersection object is the main container class of the traffic controller. It holds all variables, objects, and functions that base the functioning of the traffic light controller. This includes all objects for the lights, phases, and sensor readings. Furthermore, it includes the main functionality in case the controller is in a fail state, allowing for direct and immediate control. The traffic light controller class is the main center of operations, handling light rotations, deciding when to activate pedestrian lights, and how to handle emergency pre-emption. The conflict monitor works alongside the traffic light controller, ensuring its operation doesn't lead to outcomes where people's safety are endangered, such as having green lights in multiple directions or having a pedestrian crossing enable while perpendicular to moving traffic. Any improper outcomes lead to the intersection going into a fail state. The traffic controller and conflict monitor directly control phase groups, which are just collections of lights that are green at the same time. This can include incoming traffic, such as north and south bound straight lights.
