@@ -16,6 +16,13 @@ To model real-world intersection behavior, the simulation uses finite state mach
 
 ## Demo
 
+- RED: 🔴
+- Yellow: 🟡
+- Green: 🟢
+- Walk: 🚶
+- Stop: ✋
+- Flashing Red: 🛑
+
 ![Animated Demo](assets/Demo.gif)
 
 ## Architecture
